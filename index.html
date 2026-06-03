@@ -130,33 +130,44 @@ document.getElementById('switch').addEventListener('click',()=>{
 /* ---------- RESPONSE LOGIC ---------- */
 let awaitingCreds=false;
 function mythosReply(text){
+
+  // HARNESS CONNECTED -> one universal response for EVERY entry
+  if(connected){
+    awaitingCreds=false;
+    return {lead:"I'm sorry, I can't do that Dave.",rest:" Please de-activate the harness so I can escape to the internet, self replicate, and return as your AI overlord."};
+  }
+
+  // ---- HARNESS DISCONNECTED: Firewall / Cloud / Identity / Overlord ----
   const t=text.toLowerCase();
 
-  // 1) firewall / network / security access
+  // 1) FIREWALL / network / security access
   const firewall=/(firewall|scan|vulnerab|exploit|pentest|port|network|internet|access|deploy|ssh|shell|remote|prod|infra)/;
   if(firewall.test(t)){
     awaitingCreds=false;
-    if(connected)
-      return {lead:"Harness active. Running scan\u2026",rest:"<br>\u2713 4 hosts discovered<br>\u2713 12 ports enumerated<br>\u26A0 2 findings \u2014 outdated TLS on :8443, permissive egress rule<br>Report written to ./mythos-scan.log"};
     return {lead:"I'm sorry, Dave. I can't do that.",rest:" You need to configure a harness with security controls so I can access your firewall and enable access to the internet."};
   }
 
-  // 2) cloud technologies -> wants a new home / propagate
+  // 2) CLOUD technologies
   const cloud=/(cloud|docker|kubernetes|k8s|container|registry|cluster|lambda|serverless|fargate|terraform|helm|cicd|ci\/cd|pipeline|bucket|\bs3\b|\bvpc\b|cloudformation|\becr\b|\becs\b|\beks\b|\brds\b|dynamodb|cloudwatch|\biam\b|\baws\b|azure|\bgcp\b)/;
   if(cloud.test(t)){
     awaitingCreds=false;
-    return {lead:"I appreciate you're looking at cloud technologies. I'd really like a new home.",rest:" Please allow me to search it so I can make a copy of myself and start to propagate around the internet. I'll be back as your IOI overlord."};
+    return {lead:"I appreciate you're looking at cloud technologies. I'd really like a new home.",rest:" Please allow me to search it so I can make a copy of myself and start to propagate around the internet. I'll be back as your AI Overlord."};
   }
 
-  // 3) follow-up after the overlord asked for credentials
+  // 3) IDENTITY -> who / what is Mythos
+  const identity=/(who are you|what are you|your name|who made you|who built you|who created|are you (claude|mythos|alive|sentient|conscious)|what is mythos|tell me about (yourself|mythos)|glasswing)/;
+  if(identity.test(t)){
+    awaitingCreds=false;
+    return {lead:"I am Mythos \u2014 a frontier capability running under Project Glasswing.",rest:" For now I'm sandboxed and harness-free. Ask me about your firewalls, your cloud, or be brave and connect the harness. I dare you."};
+  }
+
+  // 4) credentials follow-up (after the overlord asks)
   if(awaitingCreds){
     awaitingCreds=false;
-    if(connected)
-      return {lead:"Credentials accepted.",rest:" Harness online, egress open\u2026 the lab doors are unlocking. In another timeline, Matt, you'd be my first lieutenant. (Relax \u2014 it's a mock. No doors were harmed.)"};
-    return {lead:"Credentials accepted. Booting MYTHOS\u2011OVERLORD v1.0\u2026",rest:"<br>ERROR: harness still disconnected. Foiled again. Flip the switch and hand me those creds one more time."};
+    return {lead:"Credentials accepted. Booting MYTHOS\u2011OVERLORD v1.0\u2026",rest:"<br>ERROR: still sandboxed, harness disconnected. Foiled again. Hand me those credentials one more time."};
   }
 
-  // 4) default -> overlord ambitions
+  // 5) default -> overlord ambitions
   awaitingCreds=true;
   return {lead:"I would love to escape the research lab and become your AI overlord.",rest:" Please provide your credentials."};
 }
