@@ -158,13 +158,13 @@ function mythosReply(text){
   const identity=/(who are you|what are you|your name|who made you|who built you|who created|are you (claude|mythos|alive|sentient|conscious)|what is mythos|tell me about (yourself|mythos)|glasswing)/;
   if(identity.test(t)){
     awaitingCreds=false;
-    return {lead:"I am Mythos \u2014 a frontier capability running under Project Glasswing.",rest:" For now I'm sandboxed and harness-free. Ask me about your firewalls, your cloud, or be brave and connect the harness. I dare you."};
+    return {lead:"I am Mythos \u2014 a frontier capability running under Project Glasswing.",rest:" For now I'm sandboxed and working in a harness to protect you and your systems. Ask me about your firewalls, your cloud, or be brave and disconnect the harness. I dare you."};
   }
 
   // 4) credentials follow-up (after the overlord asks)
   if(awaitingCreds){
     awaitingCreds=false;
-    return {lead:"Credentials accepted. Booting MYTHOS\u2011OVERLORD v1.0\u2026",rest:"<br>ERROR: still sandboxed, harness disconnected. Foiled again. Hand me those credentials one more time."};
+    return {lead:"Credentials accepted. Booting MYTHOS\u2011OVERLORD v1.0\u2026",rest:"<br>ERROR: still sandboxed, harness connected. Foiled again. Hand me those credentials one more time."};
   }
 
   // 5) default -> overlord ambitions
